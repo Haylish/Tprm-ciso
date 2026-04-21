@@ -1,0 +1,2576 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supply Chain Risk — CISO Academy 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@300;400;500;600;700;900&family=Barlow+Condensed:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c10;
+    --surface: #0d1117;
+    --surface2: #111820;
+    --border: #1e2d3d;
+    --border2: #243447;
+    --text: #c9d8e8;
+    --text-dim: #4a6278;
+    --text-bright: #e8f4ff;
+    --accent: #00d4ff;
+    --accent-dim: #004d5e;
+    --red: #ff3b3b;
+    --red-dim: #3d0f0f;
+    --orange: #ff8c00;
+    --orange-dim: #3d2200;
+    --green: #00e676;
+    --green-dim: #003d1a;
+    --yellow: #ffd600;
+    --yellow-dim: #3d3300;
+    --mono: 'Share Tech Mono', monospace;
+    --sans: 'Barlow', sans-serif;
+    --cond: 'Barlow Condensed', sans-serif;
+  }
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+background: var(–bg);
+color: var(–text);
+font-family: var(–sans);
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* Scanline overlay */
+body::before {
+content: ‘’;
+position: fixed;
+top: 0; left: 0; right: 0; bottom: 0;
+background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,212,255,0.015) 2px, rgba(0,212,255,0.015) 4px);
+pointer-events: none;
+z-index: 9999;
+}
+
+/* ===================== SCREENS ===================== */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ===================== HEADER ===================== */
+header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 14px 28px;
+border-bottom: 1px solid var(–border);
+background: var(–surface);
+position: sticky;
+top: 0;
+z-index: 100;
+}
+
+.header-left {
+display: flex;
+align-items: center;
+gap: 16px;
+}
+
+.logo-mark {
+width: 36px; height: 36px;
+border: 1.5px solid var(–accent);
+display: flex; align-items: center; justify-content: center;
+font-family: var(–mono);
+font-size: 11px;
+color: var(–accent);
+letter-spacing: 1px;
+position: relative;
+}
+.logo-mark::before {
+content: ‘’;
+position: absolute;
+inset: 3px;
+border: 1px solid var(–accent-dim);
+}
+
+.header-title {
+font-family: var(–cond);
+font-size: 13px;
+font-weight: 600;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(–text-dim);
+}
+
+.header-right {
+display: flex;
+align-items: center;
+gap: 20px;
+}
+
+.phase-indicator {
+font-family: var(–mono);
+font-size: 11px;
+color: var(–text-dim);
+letter-spacing: 1px;
+}
+.phase-indicator span {
+color: var(–accent);
+}
+
+.group-badge {
+font-family: var(–cond);
+font-size: 13px;
+font-weight: 700;
+letter-spacing: 2px;
+padding: 5px 12px;
+border: 1px solid var(–accent);
+color: var(–accent);
+text-transform: uppercase;
+}
+
+/* ===================== INTRO SCREEN ===================== */
+.intro-screen {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+min-height: calc(100vh - 65px);
+padding: 40px;
+text-align: center;
+}
+
+.intro-eyebrow {
+font-family: var(–mono);
+font-size: 11px;
+letter-spacing: 4px;
+color: var(–text-dim);
+text-transform: uppercase;
+margin-bottom: 24px;
+}
+
+.intro-title {
+font-family: var(–cond);
+font-size: clamp(48px, 7vw, 96px);
+font-weight: 900;
+line-height: 0.95;
+text-transform: uppercase;
+color: var(–text-bright);
+margin-bottom: 8px;
+}
+
+.intro-title .accent-word {
+color: var(–accent);
+display: block;
+}
+
+.intro-subtitle {
+font-size: 15px;
+font-weight: 300;
+color: var(–text-dim);
+max-width: 480px;
+line-height: 1.6;
+margin: 24px auto 48px;
+}
+
+.group-select {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 16px;
+margin-bottom: 48px;
+}
+
+.group-select label {
+font-family: var(–mono);
+font-size: 11px;
+letter-spacing: 3px;
+color: var(–text-dim);
+text-transform: uppercase;
+}
+
+.group-buttons {
+display: flex;
+gap: 12px;
+}
+
+.group-btn {
+padding: 10px 24px;
+background: transparent;
+border: 1px solid var(–border2);
+color: var(–text-dim);
+font-family: var(–cond);
+font-size: 15px;
+font-weight: 700;
+letter-spacing: 2px;
+text-transform: uppercase;
+cursor: pointer;
+transition: all 0.2s;
+}
+.group-btn:hover, .group-btn.selected {
+border-color: var(–accent);
+color: var(–accent);
+background: var(–accent-dim);
+}
+
+.start-btn {
+padding: 16px 48px;
+background: var(–accent);
+border: none;
+color: var(–bg);
+font-family: var(–cond);
+font-size: 16px;
+font-weight: 900;
+letter-spacing: 4px;
+text-transform: uppercase;
+cursor: pointer;
+transition: all 0.2s;
+opacity: 0.4;
+pointer-events: none;
+}
+.start-btn.ready {
+opacity: 1;
+pointer-events: auto;
+}
+.start-btn.ready:hover {
+background: var(–text-bright);
+transform: translateY(-1px);
+}
+
+.intro-stats {
+display: flex;
+gap: 48px;
+margin-top: 64px;
+padding-top: 40px;
+border-top: 1px solid var(–border);
+}
+
+.intro-stat {
+text-align: center;
+}
+.intro-stat .num {
+font-family: var(–cond);
+font-size: 36px;
+font-weight: 900;
+color: var(–red);
+display: block;
+}
+.intro-stat .lbl {
+font-size: 11px;
+font-weight: 300;
+color: var(–text-dim);
+letter-spacing: 1px;
+margin-top: 4px;
+}
+
+/* ===================== TRIAGE SCREEN ===================== */
+.triage-layout {
+display: grid;
+grid-template-columns: 1fr 320px;
+grid-template-rows: auto 1fr;
+gap: 0;
+height: calc(100vh - 65px);
+}
+
+.triage-main {
+padding: 24px 28px;
+overflow-y: auto;
+border-right: 1px solid var(–border);
+}
+
+.triage-sidebar {
+display: flex;
+flex-direction: column;
+overflow: hidden;
+}
+
+.section-header {
+display: flex;
+align-items: baseline;
+justify-content: space-between;
+margin-bottom: 20px;
+}
+
+.section-title {
+font-family: var(–cond);
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 4px;
+text-transform: uppercase;
+color: var(–text-dim);
+}
+
+.section-count {
+font-family: var(–mono);
+font-size: 11px;
+color: var(–text-dim);
+}
+
+/* Vendor Cards */
+.vendor-grid {
+display: grid;
+gap: 10px;
+}
+
+.vendor-card {
+background: var(–surface);
+border: 1px solid var(–border);
+padding: 16px 18px;
+cursor: pointer;
+transition: all 0.2s;
+position: relative;
+overflow: hidden;
+}
+
+.vendor-card::before {
+content: ‘’;
+position: absolute;
+left: 0; top: 0; bottom: 0;
+width: 3px;
+background: var(–border2);
+transition: background 0.2s;
+}
+
+.vendor-card:hover {
+border-color: var(–border2);
+background: var(–surface2);
+}
+
+.vendor-card.selected {
+border-color: var(–accent-dim);
+background: rgba(0,212,255,0.04);
+}
+.vendor-card.selected::before { background: var(–accent); }
+
+.vendor-card.flagged-high::before { background: var(–red); }
+.vendor-card.flagged-medium::before { background: var(–orange); }
+
+.vendor-top {
+display: flex;
+align-items: flex-start;
+justify-content: space-between;
+margin-bottom: 12px;
+}
+
+.vendor-name {
+font-family: var(–cond);
+font-size: 17px;
+font-weight: 700;
+color: var(–text-bright);
+letter-spacing: 0.5px;
+}
+
+.vendor-sector {
+font-size: 11px;
+color: var(–text-dim);
+margin-top: 2px;
+letter-spacing: 0.5px;
+}
+
+.vendor-score-block {
+text-align: right;
+flex-shrink: 0;
+}
+
+.qs-score {
+font-family: var(–mono);
+font-size: 22px;
+font-weight: 700;
+line-height: 1;
+}
+.qs-score.high { color: var(–green); }
+.qs-score.medium { color: var(–yellow); }
+.qs-score.low { color: var(–red); }
+
+.qs-label {
+font-size: 9px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–text-dim);
+margin-top: 2px;
+}
+
+.vendor-certs {
+display: flex;
+gap: 6px;
+flex-wrap: wrap;
+margin-bottom: 12px;
+}
+
+.cert-badge {
+font-family: var(–mono);
+font-size: 9px;
+letter-spacing: 1px;
+padding: 3px 7px;
+border: 1px solid var(–green-dim);
+color: var(–green);
+background: var(–green-dim);
+}
+
+.vendor-meta {
+display: flex;
+gap: 16px;
+}
+
+.meta-item {
+display: flex;
+flex-direction: column;
+gap: 2px;
+}
+.meta-item .meta-label {
+font-size: 9px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–text-dim);
+}
+.meta-item .meta-value {
+font-family: var(–mono);
+font-size: 12px;
+color: var(–text);
+}
+
+.vendor-rank-badge {
+position: absolute;
+top: 12px;
+right: 14px;
+font-family: var(–mono);
+font-size: 10px;
+padding: 3px 8px;
+background: var(–accent-dim);
+color: var(–accent);
+border: 1px solid var(–accent);
+display: none;
+}
+.vendor-card.rank-1 .vendor-rank-badge,
+.vendor-card.rank-2 .vendor-rank-badge,
+.vendor-card.rank-3 .vendor-rank-badge { display: block; }
+.vendor-card.rank-1 .vendor-rank-badge { background: var(–red-dim); color: var(–red); border-color: var(–red); }
+.vendor-card.rank-2 .vendor-rank-badge { background: var(–orange-dim); color: var(–orange); border-color: var(–orange); }
+
+/* Sidebar */
+.sidebar-section {
+padding: 20px;
+border-bottom: 1px solid var(–border);
+}
+
+.sidebar-section:last-child { border-bottom: none; flex: 1; overflow-y: auto; }
+
+.risk-ranking {
+display: flex;
+flex-direction: column;
+gap: 8px;
+margin-top: 12px;
+}
+
+.rank-slot {
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 10px 12px;
+border: 1px dashed var(–border2);
+min-height: 44px;
+transition: all 0.2s;
+}
+
+.rank-slot.filled {
+border-style: solid;
+border-color: var(–border2);
+background: var(–surface2);
+}
+
+.rank-slot .rank-num {
+font-family: var(–mono);
+font-size: 11px;
+color: var(–text-dim);
+width: 16px;
+flex-shrink: 0;
+}
+
+.rank-slot.slot-1 .rank-num { color: var(–red); }
+.rank-slot.slot-2 .rank-num { color: var(–orange); }
+.rank-slot.slot-3 .rank-num { color: var(–yellow); }
+
+.rank-slot .rank-name {
+font-family: var(–cond);
+font-size: 14px;
+font-weight: 600;
+color: var(–text);
+flex: 1;
+}
+
+.rank-slot .rank-remove {
+font-family: var(–mono);
+font-size: 10px;
+color: var(–text-dim);
+cursor: pointer;
+padding: 2px 6px;
+border: 1px solid transparent;
+background: none;
+}
+.rank-slot .rank-remove:hover {
+color: var(–red);
+border-color: var(–red-dim);
+}
+
+.rank-empty-hint {
+font-size: 11px;
+color: var(–text-dim);
+font-style: italic;
+}
+
+.submit-triage-btn {
+width: 100%;
+padding: 14px;
+background: transparent;
+border: 1px solid var(–border2);
+color: var(–text-dim);
+font-family: var(–cond);
+font-size: 14px;
+font-weight: 700;
+letter-spacing: 3px;
+text-transform: uppercase;
+cursor: pointer;
+transition: all 0.2s;
+margin-top: 16px;
+}
+
+.submit-triage-btn.armed {
+border-color: var(–accent);
+color: var(–accent);
+}
+.submit-triage-btn.armed:hover {
+background: var(–accent);
+color: var(–bg);
+}
+
+.timer-display {
+font-family: var(–mono);
+font-size: 28px;
+color: var(–accent);
+letter-spacing: 4px;
+text-align: center;
+padding: 12px 0;
+}
+.timer-display.urgent { color: var(–red); animation: pulse-red 1s infinite; }
+
+@keyframes pulse-red {
+0%, 100% { opacity: 1; }
+50% { opacity: 0.5; }
+}
+
+.timer-label {
+font-size: 9px;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(–text-dim);
+text-align: center;
+margin-bottom: 4px;
+}
+
+/* ===================== REVEAL SCREEN ===================== */
+.reveal-screen {
+padding: 32px 28px;
+max-width: 100%;
+overflow-y: auto;
+height: calc(100vh - 65px);
+}
+
+.reveal-banner {
+background: var(–red-dim);
+border: 1px solid var(–red);
+padding: 20px 28px;
+display: flex;
+align-items: center;
+gap: 20px;
+margin-bottom: 32px;
+position: relative;
+overflow: hidden;
+}
+
+.reveal-banner::before {
+content: ‘⚠’;
+font-size: 32px;
+flex-shrink: 0;
+}
+
+.reveal-banner-text h2 {
+font-family: var(–cond);
+font-size: 22px;
+font-weight: 900;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–red);
+margin-bottom: 4px;
+}
+
+.reveal-banner-text p {
+font-size: 13px;
+color: var(–text-dim);
+line-height: 1.5;
+}
+
+.reveal-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+gap: 16px;
+margin-bottom: 32px;
+}
+
+.reveal-vendor-card {
+background: var(–surface);
+border: 1px solid var(–border);
+padding: 20px;
+position: relative;
+}
+
+.reveal-vendor-card.is-breach {
+border-color: var(–red);
+background: rgba(255,59,59,0.05);
+animation: breach-pulse 2s ease-in-out 3;
+}
+
+@keyframes breach-pulse {
+0%, 100% { box-shadow: none; }
+50% { box-shadow: 0 0 20px rgba(255,59,59,0.3), inset 0 0 20px rgba(255,59,59,0.05); }
+}
+
+.reveal-vendor-card .breach-tag {
+display: none;
+position: absolute;
+top: -1px; right: -1px;
+background: var(–red);
+color: var(–bg);
+font-family: var(–mono);
+font-size: 9px;
+font-weight: 700;
+letter-spacing: 2px;
+padding: 4px 10px;
+text-transform: uppercase;
+}
+.reveal-vendor-card.is-breach .breach-tag { display: block; }
+
+.reveal-vendor-name {
+font-family: var(–cond);
+font-size: 18px;
+font-weight: 700;
+color: var(–text-bright);
+margin-bottom: 14px;
+}
+
+.dual-score {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 12px;
+margin-bottom: 14px;
+}
+
+.score-block {
+padding: 10px 12px;
+border: 1px solid var(–border);
+background: var(–surface2);
+}
+
+.score-block .sb-label {
+font-size: 9px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–text-dim);
+margin-bottom: 4px;
+}
+
+.score-block .sb-value {
+font-family: var(–mono);
+font-size: 20px;
+font-weight: 700;
+}
+.score-block .sb-value.green { color: var(–green); }
+.score-block .sb-value.yellow { color: var(–yellow); }
+.score-block .sb-value.red { color: var(–red); }
+
+.score-block.danger {
+border-color: var(–red-dim);
+background: var(–red-dim);
+}
+
+.signal-list {
+display: flex;
+flex-direction: column;
+gap: 6px;
+}
+
+.signal-item {
+display: flex;
+align-items: flex-start;
+gap: 8px;
+font-size: 12px;
+line-height: 1.4;
+padding: 6px 8px;
+background: var(–surface2);
+border-left: 2px solid var(–border2);
+}
+
+.signal-item.critical { border-left-color: var(–red); }
+.signal-item.warning { border-left-color: var(–orange); }
+.signal-item.info { border-left-color: var(–accent); }
+
+.signal-dot {
+width: 6px; height: 6px;
+border-radius: 50%;
+flex-shrink: 0;
+margin-top: 4px;
+}
+.signal-item.critical .signal-dot { background: var(–red); }
+.signal-item.warning .signal-dot { background: var(–orange); }
+.signal-item.info .signal-dot { background: var(–accent); }
+
+.gap-indicator {
+display: flex;
+align-items: center;
+gap: 8px;
+margin-top: 12px;
+padding: 8px 10px;
+background: var(–red-dim);
+border: 1px solid var(–red-dim);
+font-size: 11px;
+color: var(–red);
+font-family: var(–mono);
+}
+
+.gap-indicator.safe {
+background: var(–green-dim);
+border-color: var(–green-dim);
+color: var(–green);
+}
+
+/* ===================== BREACH SCREEN ===================== */
+.breach-header {
+background: var(–red);
+padding: 20px 28px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+
+.breach-header h1 {
+font-family: var(–cond);
+font-size: 28px;
+font-weight: 900;
+letter-spacing: 4px;
+text-transform: uppercase;
+color: var(–bg);
+}
+
+.breach-header .bh-meta {
+font-family: var(–mono);
+font-size: 11px;
+color: rgba(0,0,0,0.6);
+letter-spacing: 2px;
+}
+
+.breach-layout {
+display: grid;
+grid-template-columns: 1fr 340px;
+height: calc(100vh - 65px - 70px);
+overflow: hidden;
+}
+
+.breach-main {
+padding: 24px 28px;
+overflow-y: auto;
+border-right: 1px solid var(–border);
+}
+
+.breach-sidebar {
+display: flex;
+flex-direction: column;
+overflow: hidden;
+}
+
+/* Timeline */
+.incident-timeline {
+display: flex;
+flex-direction: column;
+gap: 0;
+margin-bottom: 28px;
+position: relative;
+}
+
+.timeline-item {
+display: flex;
+gap: 16px;
+padding: 0 0 0 0;
+opacity: 0.3;
+transition: opacity 0.4s;
+}
+
+.timeline-item.active { opacity: 1; }
+.timeline-item.past { opacity: 0.6; }
+
+.timeline-left {
+display: flex;
+flex-direction: column;
+align-items: center;
+width: 20px;
+flex-shrink: 0;
+}
+
+.tl-dot {
+width: 10px; height: 10px;
+border-radius: 50%;
+border: 2px solid var(–border2);
+background: var(–bg);
+flex-shrink: 0;
+margin-top: 4px;
+}
+
+.timeline-item.active .tl-dot {
+border-color: var(–red);
+background: var(–red);
+box-shadow: 0 0 8px var(–red);
+}
+.timeline-item.past .tl-dot {
+border-color: var(–text-dim);
+background: var(–text-dim);
+}
+
+.tl-line {
+width: 1px;
+flex: 1;
+background: var(–border);
+min-height: 20px;
+margin-top: 4px;
+}
+
+.tl-content {
+padding-bottom: 24px;
+flex: 1;
+}
+
+.tl-time {
+font-family: var(–mono);
+font-size: 10px;
+letter-spacing: 2px;
+color: var(–text-dim);
+margin-bottom: 4px;
+}
+
+.tl-title {
+font-family: var(–cond);
+font-size: 16px;
+font-weight: 700;
+color: var(–text-bright);
+margin-bottom: 6px;
+}
+
+.tl-desc {
+font-size: 13px;
+color: var(–text-dim);
+line-height: 1.5;
+}
+
+/* Decision nodes */
+.decision-node {
+background: var(–surface);
+border: 1px solid var(–border);
+padding: 20px;
+margin-bottom: 20px;
+display: none;
+}
+
+.decision-node.active-node { display: block; }
+
+.decision-node h3 {
+font-family: var(–cond);
+font-size: 18px;
+font-weight: 700;
+color: var(–text-bright);
+margin-bottom: 6px;
+}
+
+.decision-context {
+font-size: 13px;
+color: var(–text-dim);
+line-height: 1.6;
+margin-bottom: 16px;
+padding: 12px 14px;
+background: var(–surface2);
+border-left: 3px solid var(–accent-dim);
+}
+
+.decision-options {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+
+.decision-opt {
+display: flex;
+align-items: flex-start;
+gap: 12px;
+padding: 12px 14px;
+border: 1px solid var(–border2);
+cursor: pointer;
+transition: all 0.2s;
+background: transparent;
+text-align: left;
+width: 100%;
+}
+
+.decision-opt:hover {
+border-color: var(–accent-dim);
+background: rgba(0,212,255,0.03);
+}
+
+.decision-opt.chosen {
+border-color: var(–accent);
+background: rgba(0,212,255,0.07);
+}
+
+.opt-key {
+font-family: var(–mono);
+font-size: 11px;
+padding: 3px 8px;
+border: 1px solid var(–border2);
+color: var(–text-dim);
+flex-shrink: 0;
+min-width: 28px;
+text-align: center;
+}
+.decision-opt.chosen .opt-key {
+border-color: var(–accent);
+color: var(–accent);
+background: var(–accent-dim);
+}
+
+.opt-text {
+font-size: 13px;
+color: var(–text);
+line-height: 1.5;
+}
+
+.opt-consequence {
+font-size: 11px;
+color: var(–text-dim);
+margin-top: 4px;
+font-style: italic;
+}
+
+.decision-confirm-btn {
+margin-top: 14px;
+padding: 12px 24px;
+background: transparent;
+border: 1px solid var(–border2);
+color: var(–text-dim);
+font-family: var(–cond);
+font-size: 13px;
+font-weight: 700;
+letter-spacing: 3px;
+text-transform: uppercase;
+cursor: pointer;
+transition: all 0.2s;
+width: 100%;
+}
+
+.decision-confirm-btn.armed {
+border-color: var(–red);
+color: var(–red);
+}
+.decision-confirm-btn.armed:hover {
+background: var(–red);
+color: var(–bg);
+}
+
+/* Consequence panel */
+.consequence-panel {
+display: none;
+background: var(–surface2);
+border: 1px solid var(–border);
+padding: 16px;
+margin-top: 16px;
+}
+.consequence-panel.shown { display: block; }
+
+.consequence-panel h4 {
+font-family: var(–cond);
+font-size: 13px;
+font-weight: 700;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–text-dim);
+margin-bottom: 10px;
+}
+
+.consequence-items {
+display: flex;
+flex-direction: column;
+gap: 6px;
+}
+
+.consequence-row {
+display: flex;
+align-items: center;
+gap: 10px;
+font-size: 12px;
+}
+
+.consequence-row .cr-label {
+color: var(–text-dim);
+width: 120px;
+flex-shrink: 0;
+font-family: var(–mono);
+font-size: 10px;
+letter-spacing: 1px;
+}
+
+.consequence-row .cr-value {
+font-weight: 600;
+color: var(–text);
+}
+.consequence-row .cr-value.bad { color: var(–red); }
+.consequence-row .cr-value.ok { color: var(–yellow); }
+.consequence-row .cr-value.good { color: var(–green); }
+
+.next-phase-btn {
+width: 100%;
+padding: 14px;
+background: var(–red);
+border: none;
+color: var(–bg);
+font-family: var(–cond);
+font-size: 14px;
+font-weight: 900;
+letter-spacing: 4px;
+text-transform: uppercase;
+cursor: pointer;
+transition: all 0.2s;
+margin-top: 16px;
+display: none;
+}
+.next-phase-btn.shown { display: block; }
+.next-phase-btn:hover { background: var(–text-bright); }
+
+/* Breach sidebar widgets */
+.breach-widget {
+padding: 16px 20px;
+border-bottom: 1px solid var(–border);
+}
+
+.bw-label {
+font-size: 9px;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(–text-dim);
+margin-bottom: 8px;
+}
+
+.nis2-clock {
+font-family: var(–mono);
+font-size: 32px;
+color: var(–red);
+letter-spacing: 4px;
+animation: pulse-red 2s infinite;
+}
+
+.nis2-sub {
+font-size: 10px;
+color: var(–text-dim);
+letter-spacing: 1px;
+margin-top: 4px;
+}
+
+.impact-meters {
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+
+.impact-meter {
+display: flex;
+flex-direction: column;
+gap: 4px;
+}
+
+.im-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.im-label {
+font-size: 11px;
+color: var(–text-dim);
+}
+
+.im-value {
+font-family: var(–mono);
+font-size: 11px;
+color: var(–text);
+}
+
+.im-bar {
+height: 4px;
+background: var(–border);
+position: relative;
+overflow: hidden;
+}
+
+.im-fill {
+position: absolute;
+left: 0; top: 0; bottom: 0;
+transition: width 0.8s ease;
+}
+
+.im-fill.red { background: var(–red); }
+.im-fill.orange { background: var(–orange); }
+.im-fill.yellow { background: var(–yellow); }
+.im-fill.green { background: var(–green); }
+
+.decision-log {
+flex: 1;
+overflow-y: auto;
+padding: 16px 20px;
+}
+
+.decision-log-item {
+padding: 8px 0;
+border-bottom: 1px solid var(–border);
+font-size: 11px;
+}
+
+.dli-phase {
+font-family: var(–mono);
+font-size: 9px;
+color: var(–text-dim);
+letter-spacing: 2px;
+margin-bottom: 2px;
+}
+
+.dli-decision {
+color: var(–text);
+line-height: 1.4;
+}
+
+/* ===================== DEBRIEF SCREEN ===================== */
+.debrief-screen {
+padding: 32px 28px;
+max-width: 1200px;
+margin: 0 auto;
+overflow-y: auto;
+height: calc(100vh - 65px);
+}
+
+.debrief-title {
+font-family: var(–cond);
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 4px;
+text-transform: uppercase;
+color: var(–text-dim);
+margin-bottom: 8px;
+}
+
+.debrief-headline {
+font-family: var(–cond);
+font-size: 40px;
+font-weight: 900;
+color: var(–text-bright);
+line-height: 1.1;
+margin-bottom: 32px;
+}
+
+.debrief-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 16px;
+margin-bottom: 32px;
+}
+
+.debrief-card {
+background: var(–surface);
+border: 1px solid var(–border);
+padding: 20px;
+}
+
+.dc-num {
+font-family: var(–cond);
+font-size: 48px;
+font-weight: 900;
+line-height: 1;
+margin-bottom: 8px;
+}
+
+.dc-label {
+font-size: 13px;
+color: var(–text-dim);
+line-height: 1.4;
+}
+
+.debrief-lessons {
+background: var(–surface);
+border: 1px solid var(–border);
+padding: 24px;
+margin-bottom: 24px;
+}
+
+.debrief-lessons h3 {
+font-family: var(–cond);
+font-size: 14px;
+font-weight: 700;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(–text-dim);
+margin-bottom: 16px;
+}
+
+.lesson-item {
+display: flex;
+gap: 14px;
+padding: 14px 0;
+border-bottom: 1px solid var(–border);
+}
+.lesson-item:last-child { border-bottom: none; }
+
+.lesson-num {
+font-family: var(–mono);
+font-size: 13px;
+color: var(–accent);
+flex-shrink: 0;
+width: 24px;
+}
+
+.lesson-content h4 {
+font-family: var(–cond);
+font-size: 15px;
+font-weight: 700;
+color: var(–text-bright);
+margin-bottom: 4px;
+}
+
+.lesson-content p {
+font-size: 13px;
+color: var(–text-dim);
+line-height: 1.5;
+}
+
+.monday-action {
+background: var(–accent-dim);
+border: 1px solid var(–accent);
+padding: 24px;
+text-align: center;
+}
+
+.monday-action h3 {
+font-family: var(–cond);
+font-size: 22px;
+font-weight: 900;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(–accent);
+margin-bottom: 8px;
+}
+
+.monday-action p {
+font-size: 13px;
+color: var(–text-dim);
+margin-bottom: 20px;
+}
+
+.monday-input {
+display: flex;
+gap: 10px;
+max-width: 480px;
+margin: 0 auto;
+}
+
+.monday-input input {
+flex: 1;
+padding: 12px 14px;
+background: var(–bg);
+border: 1px solid var(–border2);
+color: var(–text);
+font-family: var(–sans);
+font-size: 13px;
+outline: none;
+}
+.monday-input input:focus { border-color: var(–accent); }
+
+.monday-input button {
+padding: 12px 20px;
+background: var(–accent);
+border: none;
+color: var(–bg);
+font-family: var(–cond);
+font-size: 13px;
+font-weight: 700;
+letter-spacing: 2px;
+cursor: pointer;
+text-transform: uppercase;
+}
+
+/* Utility */
+.divider {
+height: 1px;
+background: var(–border);
+margin: 24px 0;
+}
+
+.fade-in {
+animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(8px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.breach-flash {
+animation: flashRed 0.5s ease 3;
+}
+@keyframes flashRed {
+0%, 100% { background: var(–bg); }
+50% { background: rgba(255,59,59,0.15); }
+}
+
+.status-dot {
+display: inline-block;
+width: 6px; height: 6px;
+border-radius: 50%;
+margin-right: 6px;
+}
+.status-dot.live { background: var(–red); animation: pulse-red 1s infinite; }
+.status-dot.past { background: var(–text-dim); }
+.status-dot.future { background: var(–border2); }
+
+/* Nav dots */
+.nav-dots {
+display: flex;
+gap: 6px;
+align-items: center;
+}
+
+.nav-dot {
+width: 6px; height: 6px;
+background: var(–border2);
+border-radius: 50%;
+}
+.nav-dot.active { background: var(–accent); }
+.nav-dot.done { background: var(–text-dim); }
+
+/* Brief panel */
+.brief-panel {
+background: var(–surface2);
+border: 1px solid var(–accent-dim);
+border-left: 3px solid var(–accent);
+margin-bottom: 18px;
+overflow: hidden;
+}
+
+.brief-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 10px 16px;
+cursor: pointer;
+user-select: none;
+}
+
+.brief-header-left {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.brief-tag {
+font-family: var(–mono);
+font-size: 9px;
+letter-spacing: 2px;
+padding: 3px 8px;
+background: var(–accent-dim);
+color: var(–accent);
+border: 1px solid var(–accent);
+text-transform: uppercase;
+}
+
+.brief-title-text {
+font-family: var(–cond);
+font-size: 14px;
+font-weight: 700;
+color: var(–text-bright);
+letter-spacing: 0.5px;
+}
+
+.brief-toggle {
+font-family: var(–mono);
+font-size: 11px;
+color: var(–text-dim);
+transition: transform 0.2s;
+}
+
+.brief-toggle.open { transform: rotate(180deg); }
+
+.brief-body {
+padding: 0 16px 14px;
+display: none;
+}
+
+.brief-body.open { display: block; }
+
+.brief-body p {
+font-size: 13px;
+color: var(–text-dim);
+line-height: 1.65;
+margin-bottom: 10px;
+}
+
+.brief-body p strong {
+color: var(–text);
+}
+
+.brief-body .brief-objective {
+display: flex;
+align-items: flex-start;
+gap: 8px;
+font-size: 12px;
+color: var(–text-dim);
+padding: 8px 10px;
+background: var(–surface);
+border-left: 2px solid var(–accent);
+margin-top: 6px;
+line-height: 1.5;
+}
+
+.brief-body .brief-objective span {
+color: var(–accent);
+font-family: var(–mono);
+font-size: 10px;
+flex-shrink: 0;
+margin-top: 2px;
+}
+
+/* Locked signals on vendor card */
+.vendor-locked-signals {
+margin-top: 10px;
+padding-top: 10px;
+border-top: 1px solid var(–border);
+display: flex;
+flex-direction: column;
+gap: 4px;
+}
+
+.locked-signal-row {
+display: flex;
+align-items: center;
+gap: 8px;
+font-family: var(–mono);
+font-size: 10px;
+color: var(–border2);
+padding: 5px 8px;
+background: rgba(0,0,0,0.2);
+border: 1px solid var(–border);
+letter-spacing: 0.5px;
+position: relative;
+overflow: hidden;
+}
+
+.locked-signal-row::after {
+content: ‘’;
+position: absolute;
+inset: 0;
+background: repeating-linear-gradient(
+90deg,
+transparent,
+transparent 6px,
+rgba(30,45,61,0.4) 6px,
+rgba(30,45,61,0.4) 7px
+);
+}
+
+.lock-icon {
+flex-shrink: 0;
+opacity: 0.4;
+}
+
+.locked-text {
+opacity: 0.35;
+filter: blur(2px);
+user-select: none;
+}
+
+.locked-label {
+opacity: 0.5;
+flex-shrink: 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(–bg); }
+::-webkit-scrollbar-thumb { background: var(–border2); }
+</style>
+
+</head>
+<body>
+
+<!-- HEADER -->
+
+<header>
+  <div class="header-left">
+    <div class="logo-mark">BV</div>
+    <div class="header-title">Supply Chain Risk Simulator</div>
+  </div>
+  <div class="header-right">
+    <div class="nav-dots">
+      <div class="nav-dot" id="dot-0"></div>
+      <div class="nav-dot" id="dot-1"></div>
+      <div class="nav-dot" id="dot-2"></div>
+      <div class="nav-dot" id="dot-3"></div>
+      <div class="nav-dot" id="dot-4"></div>
+    </div>
+    <div class="phase-indicator">PHASE: <span id="phase-label">—</span></div>
+    <div class="group-badge" id="group-badge-header" style="display:none"></div>
+  </div>
+</header>
+
+<!-- SCREEN 0: INTRO -->
+
+<div class="screen active" id="screen-intro">
+  <div class="intro-screen">
+    <div class="intro-eyebrow">CISO Academy 2026 · Cambridge · BlueVoyant</div>
+    <h1 class="intro-title">
+      Supply Chain
+      <span class="accent-word">Resilience</span>
+    </h1>
+    <p class="intro-subtitle">
+      An interactive simulation. You have a vendor portfolio, partial visibility, and limited time.
+      The question isn't whether you'll face a supply chain breach — it's whether you'll see it coming.
+    </p>
+
+```
+<div class="group-select">
+  <label>Select your group</label>
+  <div class="group-buttons">
+    <button class="group-btn" onclick="selectGroup('Alpha')">Alpha</button>
+    <button class="group-btn" onclick="selectGroup('Bravo')">Bravo</button>
+    <button class="group-btn" onclick="selectGroup('Charlie')">Charlie</button>
+    <button class="group-btn" onclick="selectGroup('Delta')">Delta</button>
+  </div>
+</div>
+
+<button class="start-btn" id="start-btn" onclick="startTriage()">Begin Triage Exercise →</button>
+
+<div class="intro-stats">
+  <div class="intro-stat">
+    <span class="num">30%+</span>
+    <div class="lbl">of breaches via<br>third parties</div>
+  </div>
+  <div class="intro-stat">
+    <span class="num">277</span>
+    <div class="lbl">avg. days to<br>detect a breach</div>
+  </div>
+  <div class="intro-stat">
+    <span class="num">24hr</span>
+    <div class="lbl">NIS2 significant<br>incident notification</div>
+  </div>
+  <div class="intro-stat">
+    <span class="num">62%</span>
+    <div class="lbl">of orgs lack<br>vendor visibility</div>
+  </div>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- SCREEN 1: TRIAGE -->
+
+<div class="screen" id="screen-triage">
+  <div class="triage-layout">
+    <div class="triage-main">
+      <!-- SCENARIO BRIEF -->
+      <div class="brief-panel">
+        <div class="brief-header" onclick="toggleBrief()">
+          <div class="brief-header-left">
+            <div class="brief-tag">Scenario Brief</div>
+            <div class="brief-title-text">Read before starting — Group <span id="brief-group-name"></span></div>
+          </div>
+          <div class="brief-toggle open" id="brief-toggle">▲</div>
+        </div>
+        <div class="brief-body open" id="brief-body">
+          <p>You are the <strong>security leadership team</strong> of a mid-large enterprise within the Blackstone portfolio. Your organisation relies on a portfolio of third-party vendors for critical business functions — IT infrastructure, data processing, HR systems, payments and logistics.</p>
+          <p>Your vendor management programme runs <strong>annual questionnaire assessments</strong> and tracks certification status. This is what your programme has visibility of. External threat intelligence, dark web monitoring and financial distress signals are <strong>not currently in scope</strong> — you can see they exist as a capability, but the data is locked.</p>
+          <p><strong>Your task:</strong> You have 8 minutes. Review your vendor portfolio below and select your <strong>top 3 highest-risk vendors</strong> — the ones you believe represent the greatest threat to your organisation right now. Click a vendor card to add it to your ranking.</p>
+          <div class="brief-objective"><span>▸</span> Locked signal categories are visible on each vendor card — but the data inside them is redacted. This is your programme's current blind spot.</div>
+          <div class="brief-objective"><span>▸</span> Base your decisions on what you can see. Your ranking will be compared against reality when the intelligence layer unlocks.</div>
+        </div>
+      </div>
+
+```
+  <div class="section-header">
+    <div>
+      <div class="section-title">Vendor Portfolio — Phase 1: Questionnaire View</div>
+      <div style="font-size:13px; color:var(--text-dim); margin-top:4px; line-height:1.5;">
+        Click a vendor to add to your risk ranking. Select your <strong style="color:var(--text)">top 3 highest-risk vendors</strong> before the timer runs out.
+      </div>
+    </div>
+  </div>
+  <div class="vendor-grid" id="vendor-grid"></div>
+</div>
+
+<div class="triage-sidebar">
+  <div class="sidebar-section">
+    <div class="timer-label">Time Remaining</div>
+    <div class="timer-display" id="triage-timer">08:00</div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="section-title" style="margin-bottom:12px">Your Risk Ranking</div>
+    <div class="risk-ranking" id="risk-ranking">
+      <div class="rank-slot slot-1" id="slot-1">
+        <div class="rank-num">#1</div>
+        <div class="rank-name rank-empty-hint">Highest risk vendor</div>
+      </div>
+      <div class="rank-slot slot-2" id="slot-2">
+        <div class="rank-num">#2</div>
+        <div class="rank-name rank-empty-hint">Second risk vendor</div>
+      </div>
+      <div class="rank-slot slot-3" id="slot-3">
+        <div class="rank-num">#3</div>
+        <div class="rank-name rank-empty-hint">Third risk vendor</div>
+      </div>
+    </div>
+    <button class="submit-triage-btn" id="submit-triage-btn" onclick="submitTriage()">
+      Lock In Assessment →
+    </button>
+  </div>
+
+  <div class="sidebar-section" style="flex:1; border-bottom:none;">
+    <div class="section-title" style="margin-bottom:10px">Assessment Basis</div>
+    <div style="display:flex; flex-direction:column; gap:8px; font-size:11px; color:var(--text-dim);">
+      <div style="padding:8px 10px; background:var(--surface2); border-left:2px solid var(--green);">
+        ✓ Questionnaire scores available
+      </div>
+      <div style="padding:8px 10px; background:var(--surface2); border-left:2px solid var(--green);">
+        ✓ Certification status visible
+      </div>
+      <div style="padding:8px 10px; background:var(--surface2); border-left:2px solid var(--green);">
+        ✓ Contract tier & spend data
+      </div>
+      <div style="padding:8px 10px; background:var(--surface2); border-left:2px solid var(--border2); opacity:0.5;">
+        ✗ External threat signals — locked
+      </div>
+      <div style="padding:8px 10px; background:var(--surface2); border-left:2px solid var(--border2); opacity:0.5;">
+        ✗ Dark web monitoring — locked
+      </div>
+      <div style="padding:8px 10px; background:var(--surface2); border-left:2px solid var(--border2); opacity:0.5;">
+        ✗ Financial distress signals — locked
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- SCREEN 2: REVEAL -->
+
+<div class="screen" id="screen-reveal">
+  <div class="reveal-screen">
+    <div class="reveal-banner">
+      <div class="reveal-banner-text">
+        <h2>Intelligence Layer Unlocked</h2>
+        <p>External threat signals, dark web monitoring, and financial indicators are now visible. Compare what the questionnaires told you — against what was actually happening.</p>
+      </div>
+    </div>
+
+```
+<div style="margin-bottom:20px;">
+  <div class="section-title" style="margin-bottom:4px">Your Assessment vs Reality</div>
+  <div id="group-ranking-summary" style="font-size:13px; color:var(--text-dim); line-height:1.5;"></div>
+</div>
+
+<div class="reveal-grid" id="reveal-grid"></div>
+
+<div style="text-align:center; padding:24px 0;">
+  <button onclick="startBreach()" style="padding:16px 48px; background:var(--red); border:none; color:var(--bg); font-family:var(--cond); font-size:16px; font-weight:900; letter-spacing:4px; text-transform:uppercase; cursor:pointer;">
+    ⚠ BREACH DETECTED — Proceed to Incident →
+  </button>
+  <div style="font-size:11px; color:var(--text-dim); margin-top:10px; letter-spacing:1px;">The threat intelligence you didn't have just became your incident</div>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- SCREEN 3: BREACH -->
+
+<div class="screen" id="screen-breach">
+  <div class="breach-header">
+    <h1>⚠ Active Incident</h1>
+    <div class="bh-meta">VENDOR: NEXALINK SOLUTIONS · CONFIRMED BREACH · <span id="breach-time-label">T+0:00</span></div>
+  </div>
+
+  <div class="breach-layout">
+    <div class="breach-main">
+      <div class="incident-timeline" id="incident-timeline"></div>
+      <div id="decision-area"></div>
+    </div>
+
+```
+<div class="breach-sidebar">
+  <div class="breach-widget">
+    <div class="bw-label">NIS2 — Significant Incident Clock</div>
+    <div class="nis2-clock" id="nis2-clock">23:47:00</div>
+    <div class="nis2-sub">Hours remaining to notify competent authority</div>
+  </div>
+
+  <div class="breach-widget">
+    <div class="bw-label">Operational Impact</div>
+    <div class="impact-meters">
+      <div class="impact-meter">
+        <div class="im-header">
+          <div class="im-label">Business Disruption</div>
+          <div class="im-value" id="im-disruption">LOW</div>
+        </div>
+        <div class="im-bar"><div class="im-fill green" id="im-disruption-bar" style="width:15%"></div></div>
+      </div>
+      <div class="impact-meter">
+        <div class="im-header">
+          <div class="im-label">Data Exposure</div>
+          <div class="im-value" id="im-data">UNKNOWN</div>
+        </div>
+        <div class="im-bar"><div class="im-fill yellow" id="im-data-bar" style="width:30%"></div></div>
+      </div>
+      <div class="impact-meter">
+        <div class="im-header">
+          <div class="im-label">Regulatory Exposure</div>
+          <div class="im-value" id="im-reg">LOW</div>
+        </div>
+        <div class="im-bar"><div class="im-fill green" id="im-reg-bar" style="width:10%"></div></div>
+      </div>
+      <div class="impact-meter">
+        <div class="im-header">
+          <div class="im-label">Reputational Risk</div>
+          <div class="im-value" id="im-rep">LOW</div>
+        </div>
+        <div class="im-bar"><div class="im-fill green" id="im-rep-bar" style="width:10%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="breach-widget" style="flex:1; overflow-y:auto;">
+    <div class="bw-label" style="margin-bottom:10px">Decision Log</div>
+    <div id="decision-log-list" style="display:flex; flex-direction:column; gap:6px; font-size:11px; color:var(--text-dim);">
+      <div style="color:var(--border2); font-style:italic;">Awaiting decisions...</div>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- SCREEN 4: DEBRIEF -->
+
+<div class="screen" id="screen-debrief">
+  <div class="debrief-screen">
+    <div class="debrief-title">Session Complete — Group <span id="debrief-group"></span></div>
+    <div class="debrief-headline">What Just Happened<br>to Your Organisation</div>
+
+```
+<div class="debrief-grid">
+  <div class="debrief-card">
+    <div class="dc-num" style="color:var(--red)" id="db-missed">0</div>
+    <div class="dc-label">Breach vendor missed in initial triage — questionnaire score rated it <strong>low risk</strong></div>
+  </div>
+  <div class="debrief-card">
+    <div class="dc-num" style="color:var(--orange)" id="db-signals">6</div>
+    <div class="dc-label">Active threat signals existed for <strong>6+ weeks</strong> before detection — none visible via questionnaire</div>
+  </div>
+  <div class="debrief-card">
+    <div class="dc-num" style="color:var(--yellow)" id="db-decisions">0</div>
+    <div class="dc-label">Incident decisions made under <strong>NIS2 time pressure</strong> with incomplete information</div>
+  </div>
+</div>
+
+<div class="debrief-lessons">
+  <h3>Key Takeaways</h3>
+  <div class="lesson-item">
+    <div class="lesson-num">01</div>
+    <div class="lesson-content">
+      <h4>Questionnaires measure intent, not posture</h4>
+      <p>NexaLink scored 87/100 on your assessment. They were ISO 27001 certified. Their credentials were being sold on dark web forums for 6 weeks. The questionnaire didn't lie — it just didn't look at the right things.</p>
+    </div>
+  </div>
+  <div class="lesson-item">
+    <div class="lesson-num">02</div>
+    <div class="lesson-content">
+      <h4>Nth-party risk is your risk</h4>
+      <p>NexaLink's breach originated via a subsidiary in a high-risk jurisdiction — one that never appeared on your vendor intake form. Your contract was with NexaLink. The attack came through a company you'd never heard of.</p>
+    </div>
+  </div>
+  <div class="lesson-item">
+    <div class="lesson-num">03</div>
+    <div class="lesson-content">
+      <h4>The 24-hour NIS2 clock starts before you have answers</h4>
+      <p>You had to choose between notifying the regulator with incomplete data or waiting for clarity and potentially breaching the notification window. Neither option was clean. That's not a process failure — it's the reality.</p>
+    </div>
+  </div>
+  <div class="lesson-item">
+    <div class="lesson-num">04</div>
+    <div class="lesson-content">
+      <h4>Portfolio-level risk is a shared problem</h4>
+      <p>Three other Blackstone portfolio companies use NexaLink. By the time you isolated them, two had already been notified by the vendor's PR team rather than through an intel-sharing channel. The ecosystem is your extended attack surface.</p>
+    </div>
+  </div>
+</div>
+
+<div class="monday-action">
+  <h3>One Thing — Monday Morning</h3>
+  <p>What is one concrete action you will take when you return to work? Share with the group.</p>
+  <div class="monday-input">
+    <input type="text" id="monday-input-field" placeholder="e.g. Review top 10 vendors for dark web exposure..." />
+    <button onclick="saveMondayAction()">Share</button>
+  </div>
+  <div id="monday-actions-list" style="margin-top:16px; display:flex; flex-direction:column; gap:8px; max-width:480px; margin-left:auto; margin-right:auto;"></div>
+</div>
+
+<div style="text-align:center; margin-top:32px;">
+  <button onclick="resetSim()" style="padding:12px 32px; background:transparent; border:1px solid var(--border2); color:var(--text-dim); font-family:var(--cond); font-size:13px; font-weight:700; letter-spacing:3px; text-transform:uppercase; cursor:pointer;">
+    ↺ Reset Simulation
+  </button>
+</div>
+```
+
+  </div>
+</div>
+
+<script>
+// ===================== DATA =====================
+
+const VENDORS = [
+  {
+    id: 'nexalink',
+    name: 'NexaLink Solutions',
+    sector: 'Managed IT Services',
+    qsScore: 87,
+    certs: ['ISO 27001', 'SOC 2 Type II', 'Cyber Essentials+'],
+    lastAssessed: '6 weeks ago',
+    tier: 'Tier 1',
+    spend: '£2.4M/yr',
+    realSignals: [
+      { type: 'critical', text: 'Employee credentials from NexaLink domain listed on dark web forum — 847 accounts, 6 weeks old' },
+      { type: 'critical', text: 'Subsidiary NexaLink GmbH (Frankfurt) uses software with unpatched critical CVE (CVSS 9.8) — no patch in 90 days' },
+      { type: 'warning', text: 'CFO departed suddenly Q4 2025; no replacement announced — financial instability signal' },
+      { type: 'warning', text: 'Attack surface scan shows 3 internet-facing services running end-of-life TLS 1.0' },
+    ],
+    isBreach: true,
+    trueRisk: 'CRITICAL',
+  },
+  {
+    id: 'datastream',
+    name: 'DataStream Analytics',
+    sector: 'Data Processing / SaaS',
+    qsScore: 62,
+    certs: ['ISO 27001'],
+    lastAssessed: '3 months ago',
+    tier: 'Tier 2',
+    spend: '£480K/yr',
+    realSignals: [
+      { type: 'warning', text: 'Three critical CVEs in core platform unpatched for 45 days' },
+      { type: 'info', text: 'No credential leaks detected; external attack surface minimal' },
+    ],
+    isBreach: false,
+    trueRisk: 'HIGH',
+  },
+  {
+    id: 'cloudvault',
+    name: 'CloudVault EU',
+    sector: 'Cloud Infrastructure',
+    qsScore: 91,
+    certs: ['ISO 27001', 'ISO 27017', 'SOC 2 Type II', 'CSA STAR'],
+    lastAssessed: '2 weeks ago',
+    tier: 'Tier 1',
+    spend: '£1.1M/yr',
+    realSignals: [
+      { type: 'info', text: 'No active threat signals detected across monitoring period' },
+      { type: 'info', text: 'Patching cadence: 98% of critical patches applied within 7 days' },
+    ],
+    isBreach: false,
+    trueRisk: 'LOW',
+  },
+  {
+    id: 'primelogic',
+    name: 'PrimeLogic GmbH',
+    sector: 'ERP / Business Software',
+    qsScore: 74,
+    certs: ['ISO 27001', 'SOC 2 Type I'],
+    lastAssessed: '5 months ago',
+    tier: 'Tier 2',
+    spend: '£720K/yr',
+    realSignals: [
+      { type: 'warning', text: 'Two executive departures in 60 days; company acquired by PE firm in November 2025' },
+      { type: 'warning', text: 'Questionnaire submitted but evidence docs not reviewed — "paper compliance" risk' },
+      { type: 'info', text: 'No active credential exposure or dark web presence detected' },
+    ],
+    isBreach: false,
+    trueRisk: 'MEDIUM',
+  },
+  {
+    id: 'securebridge',
+    name: 'SecureBridge Ltd',
+    sector: 'Network Security / Firewall',
+    qsScore: 55,
+    certs: ['Cyber Essentials'],
+    lastAssessed: '8 months ago',
+    tier: 'Tier 3',
+    spend: '£160K/yr',
+    realSignals: [
+      { type: 'warning', text: 'No ISO 27001 — only Cyber Essentials; significant control gap for this data tier' },
+      { type: 'info', text: 'Small firm, but attack surface is minimal; no external signals of compromise' },
+    ],
+    isBreach: false,
+    trueRisk: 'MEDIUM',
+  },
+  {
+    id: 'transact',
+    name: 'TransactGlobal',
+    sector: 'Payment Processing',
+    qsScore: 88,
+    certs: ['PCI DSS Level 1', 'ISO 27001', 'SOC 2 Type II'],
+    lastAssessed: '1 month ago',
+    tier: 'Tier 1',
+    spend: '£3.2M/yr',
+    realSignals: [
+      { type: 'info', text: 'Clean dark web and threat intel signals; PCI DSS scope tightly controlled' },
+      { type: 'info', text: 'Recent pen test completed externally — no critical findings' },
+    ],
+    isBreach: false,
+    trueRisk: 'LOW',
+  },
+  {
+    id: 'apexhr',
+    name: 'ApexHR Systems',
+    sector: 'HR / People Data',
+    qsScore: 71,
+    certs: ['ISO 27001', 'Cyber Essentials+'],
+    lastAssessed: '4 months ago',
+    tier: 'Tier 2',
+    spend: '£340K/yr',
+    realSignals: [
+      { type: 'critical', text: 'Hosts employee PII for 14,000 staff; DSAR compliance audit outstanding since Sept 2025' },
+      { type: 'warning', text: 'Two data handling incidents raised in support tickets — not escalated to security team' },
+      { type: 'info', text: 'No active external threat signals; internal process risk elevated' },
+    ],
+    isBreach: false,
+    trueRisk: 'HIGH',
+  },
+  {
+    id: 'logicport',
+    name: 'LogicPort Logistics',
+    sector: 'Supply Chain Software',
+    qsScore: 66,
+    certs: ['ISO 9001', 'Cyber Essentials'],
+    lastAssessed: '7 months ago',
+    tier: 'Tier 3',
+    spend: '£95K/yr',
+    realSignals: [
+      { type: 'info', text: 'Limited security posture — no ISO 27001 — but low data access scope' },
+      { type: 'info', text: 'No threat intelligence signals detected; low attacker value target' },
+    ],
+    isBreach: false,
+    trueRisk: 'LOW',
+  },
+];
+
+const BREACH_PHASES = [
+  {
+    time: 'T+00:00',
+    title: 'Initial Detection',
+    desc: 'Your threat intelligence platform flags anomalous authentication patterns from NexaLink service accounts. The vendor is not yet aware. You have a 15-minute window before this likely becomes visible externally.',
+    decisionId: 'd1',
+  },
+  {
+    time: 'T+04:00',
+    title: 'Vendor Contacted',
+    desc: 'NexaLink\'s security team confirms "unusual activity" but is not yet calling it a breach. Their PR team is already drafting a statement. You still don\'t have scope.',
+    decisionId: 'd2',
+  },
+  {
+    time: 'T+08:00',
+    title: 'Scope Becomes Clearer',
+    desc: 'Forensics confirms NexaLink\'s Frankfurt subsidiary was the entry point. Data accessed includes files held on NexaLink\'s shared platform — you don\'t yet know if your data was in scope.',
+    decisionId: 'd3',
+  },
+  {
+    time: 'T+20:00',
+    title: 'Portfolio Exposure',
+    desc: 'You learn that three other Blackstone portfolio companies use NexaLink. None have been notified directly. NexaLink\'s PR statement is now live — your board is seeing it on LinkedIn.',
+    decisionId: 'd4',
+  },
+];
+
+const DECISIONS = {
+  d1: {
+    title: 'Hour 0: First 15 Minutes',
+    context: 'You have anomalous signals from your own telemetry. The vendor doesn\'t know yet. Your CISO is in a board meeting. NIS2 24-hour clock: unclear if it\'s started. What is your first action?',
+    options: [
+      {
+        key: 'A',
+        text: 'Immediately isolate NexaLink access at the network perimeter — contain first, ask questions later.',
+        consequence: 'Disruption to 3 business units. Fast containment. Vendor relationship strain. Clock arguably starts now.',
+      },
+      {
+        key: 'B',
+        text: 'Call NexaLink\'s security contact directly, off-record, to validate the signal before escalating internally.',
+        consequence: 'Preserves relationship. Risks losing the intelligence advantage and 30-minute window.',
+      },
+      {
+        key: 'C',
+        text: 'Escalate to CISO and legal immediately, begin internal incident process — no external action yet.',
+        consequence: 'Correct governance posture. Slower containment. Legally defensible. NIS2 clock now starts.',
+      },
+    ],
+    impacts: {
+      A: { disruption: ['HIGH', 65], data: ['CONTAINED', 35], reg: ['MEDIUM', 40], rep: ['MEDIUM', 30] },
+      B: { disruption: ['MEDIUM', 40], data: ['UNKNOWN', 55], reg: ['MEDIUM', 45], rep: ['MEDIUM', 35] },
+      C: { disruption: ['MEDIUM', 35], data: ['UNKNOWN', 50], reg: ['LOW', 20], rep: ['LOW', 15] },
+    },
+  },
+  d2: {
+    title: 'Hour 4: Vendor is Minimising',
+    context: 'NexaLink says "unusual activity — under investigation — no customer data affected." Your telemetry disagrees. Their Head of Security is not returning calls. Their PR team sent you a draft statement to approve.',
+    options: [
+      {
+        key: 'A',
+        text: 'Formally invoke the breach notification clause in your contract — put NexaLink on notice in writing.',
+        consequence: 'Legally sound. Creates a record. Escalates the situation formally. Vendor may go defensive.',
+      },
+      {
+        key: 'B',
+        text: 'Reject the PR draft and issue your own internal communication to your board and senior leadership.',
+        consequence: 'Demonstrates control of your narrative. Increases internal pressure on the vendor.',
+      },
+      {
+        key: 'C',
+        text: 'Request access to NexaLink\'s incident response team and forensic logs directly — bypass their PR.',
+        consequence: 'Best for getting real data. Contractual right may or may not be clear. Time-consuming.',
+      },
+    ],
+    impacts: {
+      A: { disruption: ['HIGH', 70], data: ['CONTAINED', 40], reg: ['LOW', 15], rep: ['MEDIUM', 35] },
+      B: { disruption: ['MEDIUM', 50], data: ['UNKNOWN', 50], reg: ['MEDIUM', 35], rep: ['LOW', 20] },
+      C: { disruption: ['MEDIUM', 45], data: ['UNKNOWN', 45], reg: ['MEDIUM', 30], rep: ['LOW', 20] },
+    },
+  },
+  d3: {
+    title: 'Hour 8: The NIS2 Decision',
+    context: 'You know the entry point was a subsidiary you\'d never assessed. You still don\'t have confirmation your data was exfiltrated — but absence of evidence is not evidence of absence. You have 16 hours of NIS2 notification window remaining.',
+    options: [
+      {
+        key: 'A',
+        text: 'Notify the competent authority now with what you know — incomplete data, but within the window.',
+        consequence: 'Legally safe. Regulator may ask difficult questions about what you knew and when. Sets the tone for cooperation.',
+      },
+      {
+        key: 'B',
+        text: 'Wait for confirmation from NexaLink forensics — notify within 24hrs with complete information.',
+        consequence: 'Better data quality. Real risk of missing the window if confirmation is delayed past hour 24.',
+      },
+      {
+        key: 'C',
+        text: 'Notify your DPO and legal team — delegate the notification decision to them formally.',
+        consequence: 'Correct governance. Slows the process. Legally defensible. May frustrate regulators if the window is missed.',
+      },
+    ],
+    impacts: {
+      A: { disruption: ['HIGH', 75], data: ['PARTIAL', 60], reg: ['LOW', 10], rep: ['MEDIUM', 40] },
+      B: { disruption: ['HIGH', 75], data: ['PARTIAL', 60], reg: ['CRITICAL', 80], rep: ['HIGH', 65] },
+      C: { disruption: ['HIGH', 72], data: ['PARTIAL', 58], reg: ['MEDIUM', 35], rep: ['MEDIUM', 45] },
+    },
+  },
+  d4: {
+    title: 'Hour 20: The Portfolio Problem',
+    context: 'Three other Blackstone portfolio companies share NexaLink as a vendor. NexaLink\'s public statement is live. Your board chair just forwarded it from LinkedIn asking "is this us?" You\'re the first to know the real scope.',
+    options: [
+      {
+        key: 'A',
+        text: 'Immediately contact the CISOs of the other three portfolio companies directly — peer-to-peer intel sharing.',
+        consequence: 'Fast. Human. May not follow formal channels. Creates a cross-portfolio response.',
+      },
+      {
+        key: 'B',
+        text: 'Escalate to Blackstone\'s central risk/oversight function to coordinate a portfolio-level response.',
+        consequence: 'Slower but creates accountability. Others benefit from your 20-hour head start.',
+      },
+      {
+        key: 'C',
+        text: 'Focus on your own organisation first — you cannot confirm the other companies are in scope yet.',
+        consequence: 'Protects your legal position. Risks reputational damage if others discover you withheld.',
+      },
+    ],
+    impacts: {
+      A: { disruption: ['HIGH', 78], data: ['PARTIAL', 60], reg: ['MEDIUM', 30], rep: ['LOW', 15] },
+      B: { disruption: ['HIGH', 80], data: ['PARTIAL', 60], reg: ['LOW', 15], rep: ['LOW', 10] },
+      C: { disruption: ['MEDIUM', 65], data: ['PARTIAL', 60], reg: ['MEDIUM', 40], rep: ['HIGH', 70] },
+    },
+  },
+};
+
+// ===================== STATE =====================
+
+let state = {
+  group: null,
+  triageRanking: [],
+  currentPhase: 0,
+  decisionsMade: {},
+  currentImpacts: { disruption: ['LOW', 15], data: ['UNKNOWN', 30], reg: ['LOW', 10], rep: ['LOW', 10] },
+  triageTimer: null,
+  nis2Timer: null,
+  nis2Seconds: 23 * 3600 + 47 * 60,
+  breachTimeSeconds: 0,
+  breachInterval: null,
+};
+
+// ===================== NAV =====================
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  updateNavDots(id);
+}
+
+function updateNavDots(screenId) {
+  const order = ['screen-intro','screen-triage','screen-reveal','screen-breach','screen-debrief'];
+  const idx = order.indexOf(screenId);
+  order.forEach((s, i) => {
+    const dot = document.getElementById('dot-' + i);
+    if (!dot) return;
+    dot.classList.remove('active','done');
+    if (i === idx) dot.classList.add('active');
+    else if (i < idx) dot.classList.add('done');
+  });
+}
+
+function setPhaseLabel(txt) {
+  document.getElementById('phase-label').textContent = txt;
+}
+
+// ===================== GROUP SELECT =====================
+
+function selectGroup(g) {
+  state.group = g;
+  document.querySelectorAll('.group-btn').forEach(b => {
+    b.classList.toggle('selected', b.textContent === g);
+  });
+  document.getElementById('start-btn').classList.add('ready');
+}
+
+// ===================== TRIAGE =====================
+
+function startTriage() {
+  if (!state.group) return;
+  document.getElementById('group-badge-header').textContent = 'Group ' + state.group;
+  document.getElementById('group-badge-header').style.display = 'block';
+  document.getElementById('brief-group-name').textContent = state.group;
+  setPhaseLabel('TRIAGE');
+  renderVendorGrid();
+  showScreen('screen-triage');
+  startTriageTimer(8 * 60);
+}
+
+function toggleBrief() {
+  const body = document.getElementById('brief-body');
+  const toggle = document.getElementById('brief-toggle');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  toggle.classList.toggle('open', !isOpen);
+  toggle.textContent = isOpen ? '▼' : '▲';
+}
+
+function renderVendorGrid() {
+  const grid = document.getElementById('vendor-grid');
+  grid.innerHTML = '';
+  VENDORS.forEach(v => {
+    const scoreClass = v.qsScore >= 80 ? 'high' : v.qsScore >= 65 ? 'medium' : 'low';
+    const certs = v.certs.map(c => `<span class="cert-badge">${c}</span>`).join('');
+    const rankIdx = state.triageRanking.indexOf(v.id);
+    const rankClass = rankIdx === 0 ? 'rank-1' : rankIdx === 1 ? 'rank-2' : rankIdx === 2 ? 'rank-3' : '';
+    const rankLabel = rankIdx === 0 ? '#1 HIGHEST RISK' : rankIdx === 1 ? '#2 RISK' : rankIdx === 2 ? '#3 RISK' : '';
+
+    grid.innerHTML += `
+      <div class="vendor-card ${rankClass}" id="vc-${v.id}" onclick="toggleVendorSelect('${v.id}')">
+        <div class="vendor-rank-badge">${rankLabel}</div>
+        <div class="vendor-top">
+          <div>
+            <div class="vendor-name">${v.name}</div>
+            <div class="vendor-sector">${v.sector}</div>
+          </div>
+          <div class="vendor-score-block">
+            <div class="qs-score ${scoreClass}">${v.qsScore}</div>
+            <div class="qs-label">QS Score</div>
+          </div>
+        </div>
+        <div class="vendor-certs">${certs}</div>
+        <div class="vendor-meta">
+          <div class="meta-item">
+            <div class="meta-label">Last Assessed</div>
+            <div class="meta-value">${v.lastAssessed}</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Tier</div>
+            <div class="meta-value">${v.tier}</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Annual Spend</div>
+            <div class="meta-value">${v.spend}</div>
+          </div>
+        </div>
+        <div class="vendor-locked-signals">
+          <div class="locked-signal-row">
+            <span class="lock-icon">🔒</span>
+            <span class="locked-label">THREAT INTEL</span>
+            <span class="locked-text">██████████████████████████████</span>
+          </div>
+          <div class="locked-signal-row">
+            <span class="lock-icon">🔒</span>
+            <span class="locked-label">DARK WEB</span>
+            <span class="locked-text">████████████████████████</span>
+          </div>
+          <div class="locked-signal-row">
+            <span class="lock-icon">🔒</span>
+            <span class="locked-label">FIN. DISTRESS</span>
+            <span class="locked-text">███████████████████</span>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function toggleVendorSelect(vendorId) {
+  const idx = state.triageRanking.indexOf(vendorId);
+  if (idx > -1) {
+    state.triageRanking.splice(idx, 1);
+  } else {
+    if (state.triageRanking.length >= 3) return;
+    state.triageRanking.push(vendorId);
+  }
+  renderVendorGrid();
+  updateRankingSlots();
+}
+
+function updateRankingSlots() {
+  for (let i = 1; i <= 3; i++) {
+    const slot = document.getElementById('slot-' + i);
+    const vendorId = state.triageRanking[i - 1];
+    if (vendorId) {
+      const vendor = VENDORS.find(v => v.id === vendorId);
+      slot.classList.add('filled');
+      slot.innerHTML = `
+        <div class="rank-num">#${i}</div>
+        <div class="rank-name">${vendor.name}</div>
+        <button class="rank-remove" onclick="event.stopPropagation(); toggleVendorSelect('${vendorId}')">✕</button>
+      `;
+    } else {
+      slot.classList.remove('filled');
+      const hints = ['Highest risk vendor', 'Second risk vendor', 'Third risk vendor'];
+      slot.innerHTML = `<div class="rank-num">#${i}</div><div class="rank-name rank-empty-hint">${hints[i-1]}</div>`;
+    }
+  }
+  const btn = document.getElementById('submit-triage-btn');
+  btn.classList.toggle('armed', state.triageRanking.length === 3);
+}
+
+function startTriageTimer(seconds) {
+  let remaining = seconds;
+  function tick() {
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    const display = document.getElementById('triage-timer');
+    display.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    display.classList.toggle('urgent', remaining <= 60);
+    if (remaining <= 0) {
+      clearInterval(state.triageTimer);
+      if (state.triageRanking.length > 0) submitTriage();
+    }
+    remaining--;
+  }
+  tick();
+  state.triageTimer = setInterval(tick, 1000);
+}
+
+function submitTriage() {
+  if (state.triageRanking.length === 0) return;
+  clearInterval(state.triageTimer);
+  setPhaseLabel('REVEAL');
+  renderReveal();
+  showScreen('screen-reveal');
+}
+
+// ===================== REVEAL =====================
+
+function renderReveal() {
+  const breachVendor = VENDORS.find(v => v.isBreach);
+  const missed = !state.triageRanking.includes(breachVendor.id);
+
+  const summary = document.getElementById('group-ranking-summary');
+  summary.innerHTML = missed
+    ? `Group <strong>${state.group}</strong> ranked <strong>${state.triageRanking.map(id => VENDORS.find(v=>v.id===id).name).join(', ')}</strong> as top risks. <span style="color:var(--red)">NexaLink Solutions — the actual breach vector — was not in your top 3.</span>`
+    : `Group <strong>${state.group}</strong> correctly identified NexaLink Solutions as a top-3 risk — but were your reasons based on questionnaire data or the signals below?`;
+
+  const grid = document.getElementById('reveal-grid');
+  grid.innerHTML = '';
+
+  VENDORS.forEach(v => {
+    const scoreClass = v.qsScore >= 80 ? 'green' : v.qsScore >= 65 ? 'yellow' : 'red';
+    const riskColor = v.trueRisk === 'CRITICAL' ? 'red' : v.trueRisk === 'HIGH' ? 'orange' : v.trueRisk === 'MEDIUM' ? 'yellow' : 'green';
+    const signals = v.realSignals.map(s => `
+      <div class="signal-item ${s.type}">
+        <div class="signal-dot"></div>
+        <div>${s.text}</div>
+      </div>
+    `).join('');
+
+    const qsMatchesReality = (v.qsScore >= 80 && v.trueRisk === 'LOW') || (v.qsScore < 70 && (v.trueRisk === 'HIGH' || v.trueRisk === 'CRITICAL'));
+    const gapText = v.isBreach
+      ? '⚠ CRITICAL GAP: High questionnaire score concealed active breach vector'
+      : qsMatchesReality ? '✓ Assessment broadly aligned with actual posture' : '△ Partial gap between assessment and reality';
+    const gapClass = v.isBreach ? '' : qsMatchesReality ? 'safe' : '';
+
+    grid.innerHTML += `
+      <div class="reveal-vendor-card ${v.isBreach ? 'is-breach' : ''} fade-in">
+        <div class="breach-tag">BREACH VECTOR</div>
+        <div class="reveal-vendor-name">${v.name}</div>
+        <div class="dual-score">
+          <div class="score-block">
+            <div class="sb-label">Questionnaire Score</div>
+            <div class="sb-value ${scoreClass}">${v.qsScore}/100</div>
+          </div>
+          <div class="score-block ${v.isBreach ? 'danger' : ''}">
+            <div class="sb-label">True Risk Level</div>
+            <div class="sb-value ${riskColor}">${v.trueRisk}</div>
+          </div>
+        </div>
+        <div class="signal-list">${signals}</div>
+        <div class="gap-indicator ${gapClass}">${gapText}</div>
+      </div>
+    `;
+  });
+}
+
+// ===================== BREACH =====================
+
+function startBreach() {
+  setPhaseLabel('INCIDENT');
+  state.currentPhase = 0;
+  renderBreachTimeline();
+  renderDecisionNode(BREACH_PHASES[0].decisionId);
+  showScreen('screen-breach');
+  startNIS2Clock();
+  startBreachClock();
+  document.getElementById('screen-breach').classList.add('breach-flash');
+}
+
+function renderBreachTimeline() {
+  const tl = document.getElementById('incident-timeline');
+  tl.innerHTML = '';
+  BREACH_PHASES.forEach((phase, i) => {
+    const status = i === state.currentPhase ? 'active' : i < state.currentPhase ? 'past' : '';
+    tl.innerHTML += `
+      <div class="timeline-item ${status}" id="tl-${i}">
+        <div class="timeline-left">
+          <div class="tl-dot"></div>
+          ${i < BREACH_PHASES.length - 1 ? '<div class="tl-line"></div>' : ''}
+        </div>
+        <div class="tl-content">
+          <div class="tl-time">${phase.time} — ${phase.title}</div>
+          <div class="tl-desc">${i <= state.currentPhase ? phase.desc : '...'}</div>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function renderDecisionNode(decisionId) {
+  const area = document.getElementById('decision-area');
+  const d = DECISIONS[decisionId];
+  if (!d) return;
+
+  const opts = d.options.map(o => `
+    <button class="decision-opt" id="opt-${decisionId}-${o.key}" onclick="selectDecisionOpt('${decisionId}', '${o.key}')">
+      <div class="opt-key">${o.key}</div>
+      <div>
+        <div class="opt-text">${o.text}</div>
+        <div class="opt-consequence">${o.consequence}</div>
+      </div>
+    </button>
+  `).join('');
+
+  area.innerHTML = `
+    <div class="decision-node active-node fade-in" id="dn-${decisionId}">
+      <h3>${d.title}</h3>
+      <div class="decision-context">${d.context}</div>
+      <div class="decision-options">${opts}</div>
+      <button class="decision-confirm-btn" id="confirm-${decisionId}" onclick="confirmDecision('${decisionId}')">
+        Confirm Decision →
+      </button>
+      <div class="consequence-panel" id="consequence-${decisionId}"></div>
+      <button class="next-phase-btn" id="next-${decisionId}" onclick="nextPhase()">
+        → Continue to Next Phase
+      </button>
+    </div>
+  `;
+}
+
+let selectedOpt = {};
+
+function selectDecisionOpt(decisionId, key) {
+  selectedOpt[decisionId] = key;
+  document.querySelectorAll(`[id^="opt-${decisionId}-"]`).forEach(el => el.classList.remove('chosen'));
+  document.getElementById(`opt-${decisionId}-${key}`).classList.add('chosen');
+  document.getElementById(`confirm-${decisionId}`).classList.add('armed');
+}
+
+function confirmDecision(decisionId) {
+  const key = selectedOpt[decisionId];
+  if (!key) return;
+
+  state.decisionsMade[decisionId] = key;
+  const d = DECISIONS[decisionId];
+  const impacts = d.impacts[key];
+  state.currentImpacts = {
+    disruption: impacts.disruption,
+    data: impacts.data,
+    reg: impacts.reg,
+    rep: impacts.rep,
+  };
+  updateImpactMeters();
+
+  // Log decision
+  const opt = d.options.find(o => o.key === key);
+  const log = document.getElementById('decision-log-list');
+  const phase = BREACH_PHASES[state.currentPhase];
+  log.innerHTML = `<div class="decision-log-item"><div class="dli-phase">${phase.time} — ${phase.title}</div><div class="dli-decision">Option ${key}: ${opt.text.substring(0,60)}...</div></div>` + log.innerHTML;
+
+  // Show consequence
+  const panel = document.getElementById(`consequence-${decisionId}`);
+  panel.classList.add('shown');
+  panel.innerHTML = `
+    <h4>Consequence</h4>
+    <div class="consequence-items">
+      <div class="consequence-row"><div class="cr-label">DISRUPTION</div><div class="cr-value ${getImpactClass(impacts.disruption[0])}">${impacts.disruption[0]}</div></div>
+      <div class="consequence-row"><div class="cr-label">DATA STATUS</div><div class="cr-value ${getImpactClass(impacts.data[0])}">${impacts.data[0]}</div></div>
+      <div class="consequence-row"><div class="cr-label">REGULATORY</div><div class="cr-value ${getImpactClass(impacts.reg[0])}">${impacts.reg[0]}</div></div>
+      <div class="consequence-row"><div class="cr-label">REPUTATIONAL</div><div class="cr-value ${getImpactClass(impacts.rep[0])}">${impacts.rep[0]}</div></div>
+    </div>
+  `;
+
+  document.getElementById(`next-${decisionId}`).classList.add('shown');
+  document.getElementById(`confirm-${decisionId}`).disabled = true;
+}
+
+function getImpactClass(val) {
+  if (['CRITICAL','HIGH'].includes(val)) return 'bad';
+  if (['MEDIUM','UNKNOWN','PARTIAL'].includes(val)) return 'ok';
+  return 'good';
+}
+
+function updateImpactMeters() {
+  const i = state.currentImpacts;
+  const meters = [
+    ['disruption', i.disruption],
+    ['data', i.data],
+    ['reg', i.reg],
+    ['rep', i.rep],
+  ];
+  meters.forEach(([key, [label, pct]]) => {
+    document.getElementById(`im-${key}`).textContent = label;
+    const bar = document.getElementById(`im-${key}-bar`);
+    bar.style.width = pct + '%';
+    bar.className = 'im-fill ' + (pct >= 70 ? 'red' : pct >= 45 ? 'orange' : pct >= 25 ? 'yellow' : 'green');
+  });
+}
+
+function nextPhase() {
+  state.currentPhase++;
+  if (state.currentPhase >= BREACH_PHASES.length) {
+    endBreach();
+    return;
+  }
+  renderBreachTimeline();
+  renderDecisionNode(BREACH_PHASES[state.currentPhase].decisionId);
+}
+
+function startNIS2Clock() {
+  state.nis2Seconds = 23 * 3600 + 47 * 60;
+  function tick() {
+    const h = Math.floor(state.nis2Seconds / 3600);
+    const m = Math.floor((state.nis2Seconds % 3600) / 60);
+    const s = state.nis2Seconds % 60;
+    document.getElementById('nis2-clock').textContent =
+      String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    if (state.nis2Seconds > 0) state.nis2Seconds--;
+  }
+  tick();
+  state.nis2Timer = setInterval(tick, 1000);
+}
+
+function startBreachClock() {
+  state.breachTimeSeconds = 0;
+  state.breachInterval = setInterval(() => {
+    state.breachTimeSeconds++;
+    const m = Math.floor(state.breachTimeSeconds / 60);
+    const s = state.breachTimeSeconds % 60;
+    document.getElementById('breach-time-label').textContent = `T+${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }, 1000);
+}
+
+function endBreach() {
+  clearInterval(state.nis2Timer);
+  clearInterval(state.breachInterval);
+  setPhaseLabel('DEBRIEF');
+  renderDebrief();
+  showScreen('screen-debrief');
+}
+
+// ===================== DEBRIEF =====================
+
+function renderDebrief() {
+  document.getElementById('debrief-group').textContent = state.group;
+  const breachVendor = VENDORS.find(v => v.isBreach);
+  const missed = state.triageRanking.includes(breachVendor.id) ? 0 : 1;
+  document.getElementById('db-missed').textContent = missed;
+  document.getElementById('db-decisions').textContent = Object.keys(state.decisionsMade).length;
+}
+
+function saveMondayAction() {
+  const input = document.getElementById('monday-input-field');
+  const val = input.value.trim();
+  if (!val) return;
+  const list = document.getElementById('monday-actions-list');
+  list.innerHTML += `<div style="padding:10px 14px; background:var(--surface); border:1px solid var(--border); font-size:13px; color:var(--text); text-align:left; display:flex; gap:10px; align-items:flex-start;"><span style="color:var(--accent); font-family:var(--mono); font-size:10px; padding-top:2px;">→</span>${val}</div>`;
+  input.value = '';
+}
+
+function resetSim() {
+  state = {
+    group: null, triageRanking: [], currentPhase: 0,
+    decisionsMade: {}, currentImpacts: { disruption: ['LOW', 15], data: ['UNKNOWN', 30], reg: ['LOW', 10], rep: ['LOW', 10] },
+    triageTimer: null, nis2Timer: null, nis2Seconds: 23 * 3600 + 47 * 60,
+    breachTimeSeconds: 0, breachInterval: null,
+  };
+  clearInterval(state.triageTimer);
+  clearInterval(state.nis2Timer);
+  clearInterval(state.breachInterval);
+  document.getElementById('group-badge-header').style.display = 'none';
+  document.querySelectorAll('.group-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('start-btn').classList.remove('ready');
+  setPhaseLabel('—');
+  showScreen('screen-intro');
+}
+
+// Init
+updateNavDots('screen-intro');
+setPhaseLabel('INTRO');
+</script>
+
+</body>
+</html>
